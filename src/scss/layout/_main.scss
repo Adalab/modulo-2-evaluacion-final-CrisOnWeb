@@ -1,0 +1,137 @@
+.main {
+  flex-grow: 1;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+
+  padding-inline: 1rem;
+
+  @media (width > 768px) {
+    grid-template-columns: 250px 1fr;
+
+    padding-inline: 1.5rem;
+  }
+}
+
+.search-and-favs {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 1rem;
+
+  @media (width > 768px) {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+}
+
+.search {
+  &__input {
+    outline: none;
+    padding-block: 0.3rem;
+
+    border: none;
+    border-bottom: 1px solid var(--color-text);
+    background-color: var(--color-bg);
+
+    color: var(--color-text);
+  }
+
+  &__btn {
+    padding-block: 0.35rem;
+    padding-inline: 0.75rem;
+
+    border: none;
+    background-color: var(--color-primary);
+
+    color: var(--color-text);
+
+    transition: background-color 0.2s ease-in-out;
+
+    &:hover {
+      background-color: var(--color-secondary);
+    }
+  }
+}
+
+.favorites {
+  width: 100%;
+  max-width: 250px;
+  padding-inline: 0.5rem;
+
+  &__title {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    text-align: center;
+  }
+
+  &__item {
+    list-style-type: none;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__img {
+    width: 36px;
+  }
+
+  &__text {
+    margin-right: 3rem;
+    font-size: 0.75rem;
+  }
+
+  &__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--color-bg);
+    border: none;
+
+    cursor: pointer;
+
+    & .icon-broken {
+      display: none;
+    }
+
+    &:hover .icon-heart {
+      display: none;
+    }
+
+    &:hover .icon-broken {
+      display: inline;
+      transform: scale(1.15);
+    }
+  }
+}
+
+.results {
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.75rem;
+  }
+
+  &__item {
+    list-style-type: none;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    padding-block: 1rem;
+    background: var(--gradient);
+  }
+
+  &__img {
+    width: 75%;
+  }
+
+  &__text {
+    margin-top: 0.75rem;
+  }
+}

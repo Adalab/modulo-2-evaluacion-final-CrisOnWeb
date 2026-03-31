@@ -1,1 +1,19 @@
+:root {
+  /* Colores principales */
+  --color-primary: #5f9ea0; /* cadetblue */
+  --color-secondary: #1e40af; /* azul oscuro */
 
+  /* Gradiente principal */
+  --gradient: linear-gradient(135deg, #5f9ea0, #1e40af);
+
+  /* Fondo */
+  --color-bg: #0b132b;
+  --color-bg-soft: #1c2541;
+
+  /* Texto */
+  --color-text: #e0fbfc;
+  --color-text-muted: #a8dadc;
+
+  /* Bordes */
+  --color-border: #3a506b;
+}

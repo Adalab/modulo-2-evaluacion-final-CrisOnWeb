@@ -1,10 +1,9 @@
 // CORE
 @use './core/reset';
 @use './core/variables';
+@use './core/body';
 
 // LAYOUT
 @use './layout/header';
 @use './layout/main';
 @use './layout/footer';
-
-// COMPONENTS

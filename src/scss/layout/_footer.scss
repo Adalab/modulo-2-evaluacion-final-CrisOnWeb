@@ -1,0 +1,29 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding-block: 1rem;
+
+  @media (width > 768px) {
+    flex-direction: row;
+    gap: 3rem;
+  }
+
+  &__copy,
+  &__api {
+    font-size: 0.85rem;
+  }
+
+  &__link {
+    color: var(--color-text);
+    font-size: 0.85rem;
+    text-decoration-line: none;
+
+    &:hover {
+      color: var(--color-text-muted);
+    }
+  }
+}
