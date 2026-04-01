@@ -1,0 +1,17 @@
+.btn {
+  padding-block: 0.35rem;
+  padding-inline: 0.75rem;
+
+  border: none;
+  background-color: var(--color-primary);
+
+  color: var(--color-text);
+
+  cursor: pointer;
+
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: var(--color-secondary);
+  }
+}
