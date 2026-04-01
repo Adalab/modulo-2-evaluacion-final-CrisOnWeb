@@ -29,16 +29,14 @@
               name="search"
               id="search"
             />
-            <button class="js_searchBtn search__btn" type="submit">
-              Buscar
-            </button>
+            <button class="js_searchBtn btn" type="submit">Buscar</button>
           </form>
         </section>
 
         <section class="favorites">
           <h2 class="favorites__title">Mis series favoritas</h2>
-          <ul class="favorites__list">
-            <li class="favorites__item">
+          <ul class="js_favoritesUl favorites__list">
+            <!-- <li class="favorites__item">
               <img
                 class="favorites__img"
                 src="https://placehold.co/210x295/e0fbfc/5f9ea0/?text=TV"
@@ -47,7 +45,7 @@
               <p class="favorites__text">Stranger Things</p>
               <button class="favorites__btn">
                 <svg
-                  class="icon icon-heart"
+                  class="icon-heart"
                   xmlns="http://www.w3.org/2000/svg"
                   height="24px"
                   viewBox="0 -960 960 960"
@@ -60,7 +58,7 @@
                 </svg>
 
                 <svg
-                  class="icon icon-broken"
+                  class="icon-broken"
                   xmlns="http://www.w3.org/2000/svg"
                   height="24px"
                   viewBox="0 -960 960 960"
@@ -72,14 +70,15 @@
                   />
                 </svg>
               </button>
-            </li>
+            </li> -->
           </ul>
+          <button class="favorites__remove btn">Borrar todo</button>
         </section>
       </div>
 
       <section class="results">
         <ul class="js_resultsUl results__list">
-          <!-- <li class="results__item">
+          <!-- <li class="js_resultsLi results__item results__item--favorite">
             <img
               class="results__img"
               src="https://placehold.co/210x295/e0fbfc/5f9ea0/?text=TV"
