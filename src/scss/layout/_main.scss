@@ -47,6 +47,8 @@
 
     color: var(--color-text);
 
+    cursor: pointer;
+
     transition: background-color 0.2s ease-in-out;
 
     &:hover {
@@ -125,10 +127,13 @@
 
     padding-block: 1rem;
     background: var(--gradient);
+
+    cursor: pointer;
   }
 
   &__img {
     width: 75%;
+    box-shadow: 0px 0px 10px 0px var(--color-bg-soft);
   }
 
   &__text {
