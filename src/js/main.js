@@ -1,7 +1,5 @@
 'use strict';
 /* POSIBLES MEJORAS:
-  - Delegación de eventos de los li
-    - const li = event.target.closest('.js_resultsLi');
   - Refactorizar
 */
 
@@ -75,11 +73,6 @@ function renderAllSeries(dataSeries) {
 
   dataSeries.forEach((serie) => {
     renderOneSerie(serie);
-
-    const allResultsLi = document.querySelectorAll('.js_resultsLi');
-    allResultsLi.forEach((li) => {
-      li.addEventListener('click', handleClickLi);
-    });
   });
 }
 
@@ -155,6 +148,32 @@ function setInLocalStorage() {
   localStorage.setItem('favs', stringifyFavSeries);
 }
 
+// Añadir un favorite al array
+function addFavorite(clickedSerie) {
+  favoriteSeries.push(clickedSerie);
+}
+
+// Eliminar un favorite del array
+function removeFavorite(clickedId) {
+  const favIndex = favoriteSeries.findIndex((serie) => serie.id === clickedId);
+  favoriteSeries.splice(favIndex, 1);
+}
+
+// Añadir o eliminar del array
+function toggleFavorite(clickedSerie) {
+  const favIndex = favoriteSeries.findIndex(
+    (serie) => serie.id === clickedSerie.id,
+  );
+
+  if (favIndex === -1) {
+    // Si no está, lo añade
+    addFavorite(clickedSerie);
+  } else {
+    // Si está, lo borra
+    removeFavorite(clickedSerie.id);
+  }
+}
+
 //FUNCIONES DE EVENTOS
 function handleClickSearchBtn(event) {
   event.preventDefault();
@@ -163,33 +182,41 @@ function handleClickSearchBtn(event) {
   getSeriesDataFromAPI(searchedValue);
 }
 
-function handleClickLi(event) {
-  const clickedId = event.currentTarget.dataset.id;
+function handleToggleFavorite(event) {
+  // Encontrar el li clicado en el ul
+  const clickedLi = event.target.closest('li');
 
-  const clickedSerie = searchedSeries.find(
-    (serie) => serie.id === parseInt(clickedId),
-  );
+  // Extraer el id del li clicado
+  const clickedId = parseInt(clickedLi.dataset.id);
 
-  if (clickedSerie) {
-    const favsIndex = favoriteSeries.findIndex(
-      (serie) => serie.id === clickedSerie.id,
-    );
-
-    if (favsIndex === -1) {
-      favoriteSeries.push(clickedSerie);
-    } else {
-      favoriteSeries.splice(favsIndex, 1);
-    }
-
-    setInLocalStorage();
-
-    renderAllFavourites(favoriteSeries);
-    renderAllSeries(searchedSeries);
+  // Si hace click fuera de un <li> (null)
+  if (!clickedLi) {
+    return;
   }
+
+  // Para saber si el click viene del botón de favoritos
+  const isFavoriteList = clickedLi.closest('.favorites');
+
+  if (isFavoriteList) {
+    // El click viene de favorites
+    removeFavorite(clickedId);
+  } else {
+    // El click viene de results
+    // Encontrar el elemento en el array de searchedSeries
+    const clickedSerie = searchedSeries.find((serie) => serie.id === clickedId);
+
+    toggleFavorite(clickedSerie);
+  }
+  setInLocalStorage();
+
+  renderAllFavourites(favoriteSeries);
+  renderAllSeries(searchedSeries);
 }
 
 //EVENTOS
 searchBtn.addEventListener('click', handleClickSearchBtn);
+resultsUl.addEventListener('click', handleToggleFavorite);
+favoritesUl.addEventListener('click', handleToggleFavorite);
 
 // CÓDIGO DE INICIO
 getFromLocalStorage();
