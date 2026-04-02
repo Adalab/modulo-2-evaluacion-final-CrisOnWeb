@@ -1,6 +1,7 @@
 'use strict';
 /* POSIBLES MEJORAS:
   - Delegación de eventos de los li
+    - const li = event.target.closest('.js_resultsLi');
   - Refactorizar
 */
 
@@ -165,17 +166,19 @@ function handleClickSearchBtn(event) {
 function handleClickLi(event) {
   const clickedId = event.currentTarget.dataset.id;
 
-  const clickedSerie = searchedSeries.find((serie) => {
-    return serie.id === parseInt(clickedId);
-  });
+  const clickedSerie = searchedSeries.find(
+    (serie) => serie.id === parseInt(clickedId),
+  );
 
-  if (clickedId !== undefined) {
+  if (clickedSerie) {
     const favsIndex = favoriteSeries.findIndex(
       (serie) => serie.id === clickedSerie.id,
     );
 
     if (favsIndex === -1) {
       favoriteSeries.push(clickedSerie);
+    } else {
+      favoriteSeries.splice(favsIndex, 1);
     }
 
     setInLocalStorage();
