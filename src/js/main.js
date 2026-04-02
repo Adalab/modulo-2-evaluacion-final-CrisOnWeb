@@ -8,6 +8,7 @@ const searchBtn = document.querySelector('.js_searchBtn');
 const searchInput = document.querySelector('.js_searchInput');
 const resultsUl = document.querySelector('.js_resultsUl');
 const favoritesUl = document.querySelector('.js_favoritesUl');
+const removeAllFavoritesBtn = document.querySelector('.js_favoritesRemoveAll');
 
 //VARIABLES GLOBALES
 let searchedSeries = [];
@@ -186,19 +187,25 @@ function handleToggleFavorite(event) {
   // Encontrar el li clicado en el ul
   const clickedLi = event.target.closest('li');
 
-  // Extraer el id del li clicado
-  const clickedId = parseInt(clickedLi.dataset.id);
-
   // Si hace click fuera de un <li> (null)
   if (!clickedLi) {
     return;
   }
+
+  // Extraer el id del li clicado
+  const clickedId = parseInt(clickedLi.dataset.id);
 
   // Para saber si el click viene del botón de favoritos
   const isFavoriteList = clickedLi.closest('.favorites');
 
   if (isFavoriteList) {
     // El click viene de favorites
+    // encontrar el botón al que se ha clickado
+    const btn = event.target.closest('.favorites__btn');
+    // De no clicarse en el botón, no hace nada
+    if (!btn) {
+      return;
+    }
     removeFavorite(clickedId);
   } else {
     // El click viene de results
@@ -213,10 +220,20 @@ function handleToggleFavorite(event) {
   renderAllSeries(searchedSeries);
 }
 
+function handleRemoveAllFavorites() {
+  favoriteSeries = [];
+
+  setInLocalStorage();
+
+  renderAllFavourites(favoriteSeries);
+  renderAllSeries(searchedSeries);
+}
+
 //EVENTOS
 searchBtn.addEventListener('click', handleClickSearchBtn);
 resultsUl.addEventListener('click', handleToggleFavorite);
 favoritesUl.addEventListener('click', handleToggleFavorite);
+removeAllFavoritesBtn.addEventListener('click', handleRemoveAllFavorites);
 
 // CÓDIGO DE INICIO
 getFromLocalStorage();
