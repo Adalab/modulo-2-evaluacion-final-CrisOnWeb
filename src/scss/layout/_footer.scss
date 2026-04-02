@@ -5,7 +5,9 @@
   align-items: center;
   gap: 0.5rem;
 
-  padding-block: 1rem;
+  padding-block: 1.5rem;
+
+  border-top: 3px solid var(--color-text-muted);
 
   @media (width > 768px) {
     flex-direction: row;
