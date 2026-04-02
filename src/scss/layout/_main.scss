@@ -143,7 +143,9 @@
   }
 
   &__text {
+    padding-inline: 0.5rem;
     margin-top: 0.75rem;
+    text-align: center;
   }
 
   &__item--favorite {
@@ -151,7 +153,6 @@
 
     .results__text {
       font-weight: bold;
-      // text-transform: uppercase;
     }
   }
 }
