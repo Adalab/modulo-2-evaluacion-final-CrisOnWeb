@@ -1,7 +1,4 @@
 'use strict';
-/* POSIBLES MEJORAS:
-  - Refactorizar
-*/
 
 // QUERY SELECTORS
 const searchBtn = document.querySelector('.js_searchBtn');
@@ -19,13 +16,13 @@ function getSeriesDataFromAPI(searchedItem) {
   fetch(`//api.tvmaze.com/search/shows?q=${searchedItem}`)
     .then((response) => response.json())
     .then((data) => {
-      searchedSeries = data.map((serie) => {
+      searchedSeries = data.map((series) => {
         return {
-          id: serie.show.id,
-          name: serie.show.name,
+          id: series.show.id,
+          name: series.show.name,
           // Si la API tiene imagen, guarda la medium y si no tiene imagen, guarda imagen default
-          image: serie.show.image
-            ? serie.show.image.medium
+          image: series.show.image
+            ? series.show.image.medium
             : 'https://placehold.co/210x295/e0fbfc/5f9ea0/?text=TV',
         };
       });
@@ -35,66 +32,70 @@ function getSeriesDataFromAPI(searchedItem) {
     .catch((error) => console.error(error));
 }
 
-function renderOneSerie(dataSerie) {
+function isSeriesInFavorites(searchedSeries) {
   // Busca en favoritos si existe la serie
   const favsIndex = favoriteSeries.findIndex(
-    (serie) => serie.id === dataSerie.id,
+    (series) => series.id === searchedSeries.id,
   );
 
-  // Creación de la clase para favoritos solo si se encuentra en favoritos
-  const favClass = favsIndex !== -1 ? 'results__item--favorite' : '';
-
-  // Creación del <li>
-  const liSerie = document.createElement('li');
-  liSerie.classList.add('js_resultsLi', 'results__item');
-  // Añade la clase solo si favClass no es falsy (está vacío)
-  if (favClass) {
-    liSerie.classList.add(favClass);
-  }
-  liSerie.dataset.id = `${dataSerie.id}`;
-  resultsUl.appendChild(liSerie);
-
-  // Creación de la <img>
-  const imgSerie = document.createElement('img');
-  imgSerie.classList.add('results__img');
-  imgSerie.src = `${dataSerie.image}`;
-  imgSerie.alt = `${dataSerie.name}`;
-  liSerie.appendChild(imgSerie);
-
-  // Creación del <p>
-  const titleSerie = document.createElement('p');
-  titleSerie.classList.add('results__text');
-  const textTitle = document.createTextNode(`${dataSerie.name}`);
-  titleSerie.appendChild(textTitle);
-  liSerie.appendChild(titleSerie);
+  // Devuelve false si no está, true si la encuentra
+  return favsIndex !== -1;
 }
 
-function renderAllSeries(dataSeries) {
+function renderOneSeries(searchedSeries) {
+  const isFavorite = isSeriesInFavorites(searchedSeries);
+
+  // Creación del <li>
+  const liSeries = document.createElement('li');
+  liSeries.classList.add('js_resultsLi', 'results__item');
+  // Añade la clase solo si favClass no es falsy (está vacío)
+  if (isFavorite) {
+    liSeries.classList.add('results__item--favorite');
+  }
+  liSeries.dataset.id = `${searchedSeries.id}`;
+  resultsUl.appendChild(liSeries);
+
+  // Creación de la <img>
+  const imgSeries = document.createElement('img');
+  imgSeries.classList.add('results__img');
+  imgSeries.src = `${searchedSeries.image}`;
+  imgSeries.alt = `${searchedSeries.name}`;
+  liSeries.appendChild(imgSeries);
+
+  // Creación del <p>
+  const titleSeries = document.createElement('p');
+  titleSeries.classList.add('results__text');
+  const textTitle = document.createTextNode(`${searchedSeries.name}`);
+  titleSeries.appendChild(textTitle);
+  liSeries.appendChild(titleSeries);
+}
+
+function renderAllSeries(searchedSeries) {
   resultsUl.innerHTML = '';
 
-  dataSeries.forEach((serie) => {
-    renderOneSerie(serie);
+  searchedSeries.forEach((series) => {
+    renderOneSeries(series);
   });
 }
 
-function renderOneFav(dataFav) {
+function renderOneFav(favoriteSeries) {
   // Creación de <li>
   const liFav = document.createElement('li');
   liFav.classList.add('favorites__item');
-  liFav.dataset.id = `${dataFav.id}`;
+  liFav.dataset.id = `${favoriteSeries.id}`;
   favoritesUl.appendChild(liFav);
 
   // Creación de <img>
   const imgFav = document.createElement('img');
   imgFav.classList.add('favorites__img');
-  imgFav.src = `${dataFav.image}`;
-  imgFav.alt = `${dataFav.name}`;
+  imgFav.src = `${favoriteSeries.image}`;
+  imgFav.alt = `${favoriteSeries.name}`;
   liFav.appendChild(imgFav);
 
   // Creación de <p>
   const titleFav = document.createElement('p');
   titleFav.classList.add('favorites__text');
-  const textTitle = document.createTextNode(`${dataFav.name}`);
+  const textTitle = document.createTextNode(`${favoriteSeries.name}`);
   titleFav.appendChild(textTitle);
   liFav.appendChild(titleFav);
 
@@ -129,11 +130,11 @@ function renderOneFav(dataFav) {
   liFav.appendChild(btnFav);
 }
 
-function renderAllFavourites(dataFavs) {
+function renderAllFavourites(favoriteSeries) {
   favoritesUl.innerHTML = '';
 
-  dataFavs.forEach((serie) => {
-    renderOneFav(serie);
+  favoriteSeries.forEach((series) => {
+    renderOneFav(series);
   });
 }
 
@@ -157,28 +158,30 @@ function setInLocalStorage() {
 }
 
 // Añadir un favorite al array
-function addFavorite(clickedSerie) {
-  favoriteSeries.push(clickedSerie);
+function addFavorite(clickedSeries) {
+  favoriteSeries.push(clickedSeries);
 }
 
 // Eliminar un favorite del array
 function removeFavorite(clickedId) {
-  const favIndex = favoriteSeries.findIndex((serie) => serie.id === clickedId);
+  const favIndex = favoriteSeries.findIndex(
+    (series) => series.id === clickedId,
+  );
   favoriteSeries.splice(favIndex, 1);
 }
 
 // Añadir o eliminar del array
-function toggleFavorite(clickedSerie) {
+function toggleFavorite(clickedSeries) {
   const favIndex = favoriteSeries.findIndex(
-    (serie) => serie.id === clickedSerie.id,
+    (series) => series.id === clickedSeries.id,
   );
 
   if (favIndex === -1) {
     // Si no está, lo añade
-    addFavorite(clickedSerie);
+    addFavorite(clickedSeries);
   } else {
     // Si está, lo borra
-    removeFavorite(clickedSerie.id);
+    removeFavorite(clickedSeries.id);
   }
 }
 
@@ -217,9 +220,11 @@ function handleToggleFavorite(event) {
   } else {
     // El click viene de results
     // Encontrar el elemento en el array de searchedSeries
-    const clickedSerie = searchedSeries.find((serie) => serie.id === clickedId);
+    const clickedSeries = searchedSeries.find(
+      (series) => series.id === clickedId,
+    );
 
-    toggleFavorite(clickedSerie);
+    toggleFavorite(clickedSeries);
   }
   setInLocalStorage();
 
