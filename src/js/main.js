@@ -39,17 +39,15 @@ function getSeriesDataFromAPI(searchedItem) {
 }
 
 // Busca en favoritos si existe la serie
-function isSeriesInFavorites(searchedSeries) {
-  const favsIndex = favoriteSeries.findIndex(
-    (series) => series.id === searchedSeries.id,
-  );
+function isSeriesInFavorites(series) {
+  const favIndex = favoriteSeries.findIndex((fav) => fav.id === series.id);
 
   // Devuelve false si no está, true si la encuentra
-  return favsIndex !== -1;
+  return favIndex !== -1;
 }
 
-function renderOneSeries(searchedSeries) {
-  const isFavorite = isSeriesInFavorites(searchedSeries);
+function renderOneSeries(series) {
+  const isFavorite = isSeriesInFavorites(series);
 
   // Creación del <li>
   const liSeries = document.createElement('li');
@@ -58,50 +56,50 @@ function renderOneSeries(searchedSeries) {
   if (isFavorite) {
     liSeries.classList.add('results__item--favorite');
   }
-  liSeries.dataset.id = `${searchedSeries.id}`;
+  liSeries.dataset.id = `${series.id}`;
   resultsUl.appendChild(liSeries);
 
   // Creación de la <img>
   const imgSeries = document.createElement('img');
   imgSeries.classList.add('results__img');
-  imgSeries.src = `${searchedSeries.image}`;
-  imgSeries.alt = `${searchedSeries.name}`;
+  imgSeries.src = `${series.image}`;
+  imgSeries.alt = `${series.name}`;
   liSeries.appendChild(imgSeries);
 
   // Creación del <p>
   const titleSeries = document.createElement('p');
   titleSeries.classList.add('results__text');
-  const textTitle = document.createTextNode(`${searchedSeries.name}`);
+  const textTitle = document.createTextNode(`${series.name}`);
   titleSeries.appendChild(textTitle);
   liSeries.appendChild(titleSeries);
 }
 
-function renderAllSeries(searchedSeries) {
+function renderAllSeries(seriesList) {
   resultsUl.innerHTML = '';
 
-  searchedSeries.forEach((series) => {
+  seriesList.forEach((series) => {
     renderOneSeries(series);
   });
 }
 
-function renderOneFav(favoriteSeries) {
+function renderOneFav(favorite) {
   // Creación de <li>
   const liFav = document.createElement('li');
   liFav.classList.add('favorites__item');
-  liFav.dataset.id = `${favoriteSeries.id}`;
+  liFav.dataset.id = `${favorite.id}`;
   favoritesUl.appendChild(liFav);
 
   // Creación de <img>
   const imgFav = document.createElement('img');
   imgFav.classList.add('favorites__img');
-  imgFav.src = `${favoriteSeries.image}`;
-  imgFav.alt = `${favoriteSeries.name}`;
+  imgFav.src = `${favorite.image}`;
+  imgFav.alt = `${favorite.name}`;
   liFav.appendChild(imgFav);
 
   // Creación de <p>
   const titleFav = document.createElement('p');
   titleFav.classList.add('favorites__text');
-  const textTitle = document.createTextNode(`${favoriteSeries.name}`);
+  const textTitle = document.createTextNode(`${favorite.name}`);
   titleFav.appendChild(textTitle);
   liFav.appendChild(titleFav);
 
@@ -136,11 +134,11 @@ function renderOneFav(favoriteSeries) {
   liFav.appendChild(btnFav);
 }
 
-function renderAllFavourites(favoriteSeries) {
+function renderAllFavourites(favoriteList) {
   favoritesUl.innerHTML = '';
 
-  favoriteSeries.forEach((series) => {
-    renderOneFav(series);
+  favoriteList.forEach((fav) => {
+    renderOneFav(fav);
   });
 }
 
@@ -170,16 +168,14 @@ function addFavorite(clickedSeries) {
 
 // Eliminar un favorite del array
 function removeFavorite(clickedId) {
-  const favIndex = favoriteSeries.findIndex(
-    (series) => series.id === clickedId,
-  );
+  const favIndex = favoriteSeries.findIndex((fav) => fav.id === clickedId);
   favoriteSeries.splice(favIndex, 1);
 }
 
 // Añadir o eliminar del array
 function toggleFavorite(clickedSeries) {
   const favIndex = favoriteSeries.findIndex(
-    (series) => series.id === clickedSeries.id,
+    (fav) => fav.id === clickedSeries.id,
   );
 
   if (favIndex === -1) {
