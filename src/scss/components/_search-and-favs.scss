@@ -1,0 +1,122 @@
+.search-and-favs {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 1.5rem;
+
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+
+  @media (width > 768px) {
+    flex-direction: column;
+  }
+}
+
+.search {
+  &__form {
+    display: flex;
+    gap: 0.25rem;
+  }
+
+  &__input {
+    flex-grow: 1;
+    outline: none;
+    padding-block: 0.3rem;
+
+    border: none;
+    border-bottom: 1px solid var(--color-text);
+    background-color: var(--color-bg);
+
+    color: var(--color-text);
+  }
+}
+
+.favorites {
+  display: flex;
+  flex-direction: column;
+
+  padding-inline: 0.5rem;
+
+  &__title {
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+    text-align: center;
+  }
+
+  &__item {
+    list-style-type: none;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 0.25rem;
+  }
+
+  &__img {
+    width: 36px;
+  }
+
+  &__text {
+    margin-right: auto;
+    margin-left: 1rem;
+    font-size: 0.75rem;
+  }
+
+  &__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding-right: 0.15rem;
+
+    background-color: var(--color-bg);
+    border: none;
+
+    cursor: pointer;
+
+    position: relative;
+
+    // Favorecer la accesibilidad con teclado
+    &:focus-visible {
+      outline: 2px solid var(--color-text);
+      outline-offset: 12px;
+    }
+
+    // Ambos iconos
+    & .icon-broken,
+    & .icon-heart {
+      position: absolute;
+      transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+    }
+
+    // Estado inicial
+    & .icon-heart {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    & .icon-broken {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+
+    // hover
+    &:hover .icon-heart {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+
+    &:hover .icon-broken {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+  }
+
+  &__remove {
+    align-self: center;
+    margin-block: 0.75rem;
+  }
+}

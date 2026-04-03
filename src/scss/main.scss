@@ -9,4 +9,6 @@
 @use './layout/footer';
 
 // COMPONENTS
+@use './components/search-and-favs';
+@use './components/results';
 @use './components/button';
