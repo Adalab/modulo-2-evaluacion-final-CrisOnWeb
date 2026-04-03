@@ -18,6 +18,59 @@ function startApp() {
   addEventListeners();
 }
 
+// Busca en favoritos si existe la serie
+function isSeriesInFavorites(series) {
+  const favIndex = favoriteSeries.findIndex((fav) => fav.id === series.id);
+
+  // Devuelve false si no está, true si la encuentra
+  return favIndex !== -1;
+}
+
+// Añadir un favorite al array
+function addFavorite(clickedSeries) {
+  favoriteSeries.push(clickedSeries);
+}
+
+// Eliminar un favorite del array
+function removeFavorite(clickedId) {
+  const favIndex = favoriteSeries.findIndex((fav) => fav.id === clickedId);
+  favoriteSeries.splice(favIndex, 1);
+}
+
+// Añadir o eliminar del array
+function toggleFavorite(clickedSeries) {
+  const favIndex = favoriteSeries.findIndex(
+    (fav) => fav.id === clickedSeries.id,
+  );
+
+  if (favIndex === -1) {
+    // Si no está, lo añade
+    addFavorite(clickedSeries);
+  } else {
+    // Si está, lo borra
+    removeFavorite(clickedSeries.id);
+  }
+}
+
+// Trae los datos de localStorage a la página
+function getFromLocalStorage() {
+  const localStorageFavs = localStorage.getItem('favs');
+
+  if (localStorageFavs !== null) {
+    favoriteSeries = JSON.parse(localStorageFavs);
+  }
+}
+
+// Guarda los datos en el localStorage solo si el array tiene elementos
+function setInLocalStorage() {
+  if (favoriteSeries.length === 0) {
+    localStorage.removeItem('favs');
+  } else {
+    const stringifyFavSeries = JSON.stringify(favoriteSeries);
+    localStorage.setItem('favs', stringifyFavSeries);
+  }
+}
+
 function getSeriesDataFromAPI(searchedItem) {
   fetch(`//api.tvmaze.com/search/shows?q=${searchedItem}`)
     .then((response) => response.json())
@@ -38,12 +91,10 @@ function getSeriesDataFromAPI(searchedItem) {
     .catch((error) => console.error(error));
 }
 
-// Busca en favoritos si existe la serie
-function isSeriesInFavorites(series) {
-  const favIndex = favoriteSeries.findIndex((fav) => fav.id === series.id);
-
-  // Devuelve false si no está, true si la encuentra
-  return favIndex !== -1;
+function updateUI() {
+  setInLocalStorage();
+  renderAllFavourites(favoriteSeries);
+  renderAllSeries(searchedSeries);
 }
 
 function renderOneSeries(series) {
@@ -140,57 +191,6 @@ function renderAllFavourites(favoriteList) {
   favoriteList.forEach((fav) => {
     renderOneFav(fav);
   });
-}
-
-// Trae los datos de localStorage a la página
-function getFromLocalStorage() {
-  const localStorageFavs = localStorage.getItem('favs');
-
-  if (localStorageFavs !== null) {
-    favoriteSeries = JSON.parse(localStorageFavs);
-  }
-}
-
-// Guarda los datos en el localStorage solo si el array tiene elementos
-function setInLocalStorage() {
-  if (favoriteSeries.length === 0) {
-    localStorage.removeItem('favs');
-  } else {
-    const stringifyFavSeries = JSON.stringify(favoriteSeries);
-    localStorage.setItem('favs', stringifyFavSeries);
-  }
-}
-
-// Añadir un favorite al array
-function addFavorite(clickedSeries) {
-  favoriteSeries.push(clickedSeries);
-}
-
-// Eliminar un favorite del array
-function removeFavorite(clickedId) {
-  const favIndex = favoriteSeries.findIndex((fav) => fav.id === clickedId);
-  favoriteSeries.splice(favIndex, 1);
-}
-
-// Añadir o eliminar del array
-function toggleFavorite(clickedSeries) {
-  const favIndex = favoriteSeries.findIndex(
-    (fav) => fav.id === clickedSeries.id,
-  );
-
-  if (favIndex === -1) {
-    // Si no está, lo añade
-    addFavorite(clickedSeries);
-  } else {
-    // Si está, lo borra
-    removeFavorite(clickedSeries.id);
-  }
-}
-
-function updateUI() {
-  setInLocalStorage();
-  renderAllFavourites(favoriteSeries);
-  renderAllSeries(searchedSeries);
 }
 
 //FUNCIONES DE EVENTOS
