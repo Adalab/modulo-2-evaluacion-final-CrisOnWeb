@@ -18,9 +18,13 @@ function startApp() {
   addEventListeners();
 }
 
+function getFavoriteIndex(id) {
+  return favoriteSeries.findIndex((fav) => fav.id === id);
+}
+
 // Busca en favoritos si existe la serie
 function isSeriesInFavorites(series) {
-  const favIndex = favoriteSeries.findIndex((fav) => fav.id === series.id);
+  const favIndex = getFavoriteIndex(series.id);
 
   // Devuelve false si no está, true si la encuentra
   return favIndex !== -1;
@@ -33,15 +37,13 @@ function addFavorite(clickedSeries) {
 
 // Eliminar un favorite del array
 function removeFavorite(clickedId) {
-  const favIndex = favoriteSeries.findIndex((fav) => fav.id === clickedId);
+  const favIndex = getFavoriteIndex(clickedId);
   favoriteSeries.splice(favIndex, 1);
 }
 
 // Añadir o eliminar del array
 function toggleFavorite(clickedSeries) {
-  const favIndex = favoriteSeries.findIndex(
-    (fav) => fav.id === clickedSeries.id,
-  );
+  const favIndex = getFavoriteIndex(clickedSeries.id);
 
   if (favIndex === -1) {
     // Si no está, lo añade
