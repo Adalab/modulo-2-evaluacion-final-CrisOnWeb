@@ -101,9 +101,11 @@ function renderOneFav(dataFav) {
   //Creación de <button>
   const btnFav = document.createElement('button');
   btnFav.classList.add('favorites__btn');
+  btnFav.ariaLabel = 'Eliminar de favoritos';
   btnFav.innerHTML = `
     <svg
       class="icon-heart"
+      aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       height="24px"
       viewBox="0 -960 960 960"
@@ -115,6 +117,7 @@ function renderOneFav(dataFav) {
 
     <svg
       class="icon-broken"
+      aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       height="24px"
       viewBox="0 -960 960 960"

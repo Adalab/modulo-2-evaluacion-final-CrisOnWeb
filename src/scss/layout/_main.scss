@@ -89,21 +89,49 @@
     align-items: center;
     justify-content: center;
 
+    padding-right: 0.15rem;
+
     background-color: var(--color-bg);
     border: none;
 
     cursor: pointer;
 
-    & .icon-broken {
-      display: none;
+    position: relative;
+
+    // Favorecer la accesibilidad con teclado
+    &:focus-visible {
+      outline: 2px solid var(--color-text);
+      outline-offset: 12px;
     }
 
+    // Ambos iconos
+    & .icon-broken,
+    & .icon-heart {
+      position: absolute;
+      transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
+    }
+
+    // Estado inicial
+    & .icon-heart {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    & .icon-broken {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+
+    // hover
     &:hover .icon-heart {
-      display: none;
+      opacity: 0;
+      transform: scale(0.8);
     }
 
     &:hover .icon-broken {
-      display: inline;
+      opacity: 1;
       transform: scale(1.15);
     }
   }
