@@ -146,10 +146,14 @@ function getFromLocalStorage() {
   }
 }
 
-// Guarda los datos en el localStorage
+// Guarda los datos en el localStorage solo si el array tiene elementos
 function setInLocalStorage() {
-  const stringifyFavSeries = JSON.stringify(favoriteSeries);
-  localStorage.setItem('favs', stringifyFavSeries);
+  if (favoriteSeries.length === 0) {
+    localStorage.removeItem('favs');
+  } else {
+    const stringifyFavSeries = JSON.stringify(favoriteSeries);
+    localStorage.setItem('favs', stringifyFavSeries);
+  }
 }
 
 // Añadir un favorite al array

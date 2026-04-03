@@ -71,4 +71,4 @@ Este proyecto está basado en el [starter kit de Adalab](https://github.com/Adal
 
 ## Autora
 
-- [Cris](https://github.com/CrisOnWeb) – Desarrollo Web Full-Stack en formación en [Adalab](https://adalab.es/).
+[Cris](https://github.com/CrisOnWeb) – Desarrollo Web Full-Stack en formación en [Adalab](https://adalab.es/).
