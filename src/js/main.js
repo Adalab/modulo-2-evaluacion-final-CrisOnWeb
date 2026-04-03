@@ -12,6 +12,12 @@ let searchedSeries = [];
 let favoriteSeries = [];
 
 // FUNCIONES
+function startApp() {
+  getFromLocalStorage();
+  renderAllFavourites(favoriteSeries);
+  addEventListeners();
+}
+
 function getSeriesDataFromAPI(searchedItem) {
   fetch(`//api.tvmaze.com/search/shows?q=${searchedItem}`)
     .then((response) => response.json())
@@ -32,8 +38,8 @@ function getSeriesDataFromAPI(searchedItem) {
     .catch((error) => console.error(error));
 }
 
+// Busca en favoritos si existe la serie
 function isSeriesInFavorites(searchedSeries) {
-  // Busca en favoritos si existe la serie
   const favsIndex = favoriteSeries.findIndex(
     (series) => series.id === searchedSeries.id,
   );
@@ -48,7 +54,7 @@ function renderOneSeries(searchedSeries) {
   // Creación del <li>
   const liSeries = document.createElement('li');
   liSeries.classList.add('js_resultsLi', 'results__item');
-  // Añade la clase solo si favClass no es falsy (está vacío)
+  // Añade la clase solo si isFavorite es true
   if (isFavorite) {
     liSeries.classList.add('results__item--favorite');
   }
@@ -185,6 +191,12 @@ function toggleFavorite(clickedSeries) {
   }
 }
 
+function updateUI() {
+  setInLocalStorage();
+  renderAllFavourites(favoriteSeries);
+  renderAllSeries(searchedSeries);
+}
+
 //FUNCIONES DE EVENTOS
 function handleClickSearchBtn(event) {
   event.preventDefault();
@@ -226,27 +238,22 @@ function handleToggleFavorite(event) {
 
     toggleFavorite(clickedSeries);
   }
-  setInLocalStorage();
-
-  renderAllFavourites(favoriteSeries);
-  renderAllSeries(searchedSeries);
+  updateUI();
 }
 
 function handleRemoveAllFavorites() {
   favoriteSeries = [];
 
-  setInLocalStorage();
-
-  renderAllFavourites(favoriteSeries);
-  renderAllSeries(searchedSeries);
+  updateUI();
 }
 
 //EVENTOS
-searchBtn.addEventListener('click', handleClickSearchBtn);
-resultsUl.addEventListener('click', handleToggleFavorite);
-favoritesUl.addEventListener('click', handleToggleFavorite);
-removeAllFavoritesBtn.addEventListener('click', handleRemoveAllFavorites);
+function addEventListeners() {
+  searchBtn.addEventListener('click', handleClickSearchBtn);
+  resultsUl.addEventListener('click', handleToggleFavorite);
+  favoritesUl.addEventListener('click', handleToggleFavorite);
+  removeAllFavoritesBtn.addEventListener('click', handleRemoveAllFavorites);
+}
 
 // CÓDIGO DE INICIO
-getFromLocalStorage();
-renderAllFavourites(favoriteSeries);
+startApp();
