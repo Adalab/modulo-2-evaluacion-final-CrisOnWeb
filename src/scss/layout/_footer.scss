@@ -19,13 +19,34 @@
     font-size: 0.85rem;
   }
 
+  &__copy strong,
+  &__api strong {
+    font-weight: 500;
+  }
+
   &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.15rem;
+
     color: var(--color-text);
     font-size: 0.85rem;
+    font-weight: 500;
     text-decoration-line: none;
+    transition: transform 0.2s linear;
+
+    & .icon-github {
+      width: 18px;
+      height: 18px;
+    }
 
     &:hover {
-      color: var(--color-text-muted);
+      transform: translateY(-1px);
+      text-decoration: underline;
+
+      & .icon-github {
+        transform: scale(1.1);
+      }
     }
   }
 }
