@@ -1,15 +1,11 @@
 .search-and-favs {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   gap: 1.5rem;
 
   width: 100%;
   max-width: 350px;
   margin: 0 auto;
-
-  @media (width > 768px) {
-    flex-direction: column;
-  }
 }
 
 .search {
@@ -28,14 +24,18 @@
     background-color: var(--color-bg);
 
     color: var(--color-text);
+
+    &:focus-visible {
+      outline: 1px solid var(--color-text);
+      outline-offset: 2px;
+      border-radius: 1px;
+    }
   }
 }
 
 .favorites {
   display: flex;
   flex-direction: column;
-
-  padding-inline: 0.5rem;
 
   &__title {
     margin-bottom: 1rem;
@@ -68,7 +68,8 @@
     align-items: center;
     justify-content: center;
 
-    padding-right: 0.15rem;
+    width: 24px;
+    height: 24px;
 
     background-color: var(--color-bg);
     border: none;
@@ -79,14 +80,21 @@
 
     // Favorecer la accesibilidad con teclado
     &:focus-visible {
-      outline: 2px solid var(--color-text);
-      outline-offset: 12px;
+      outline: 1px solid var(--color-text);
+      outline-offset: 2px;
+      border-radius: 5px;
     }
 
     // Ambos iconos
     & .icon-broken,
     & .icon-heart {
       position: absolute;
+      margin: auto;
+      inset: 0;
+
+      width: 24px;
+      height: 24px;
+
       transition:
         opacity 0.3s ease,
         transform 0.3s ease;
