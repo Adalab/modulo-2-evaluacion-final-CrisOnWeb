@@ -12,12 +12,15 @@ let searchedSeries = [];
 let favoriteSeries = [];
 
 // FUNCIONES
+// START FUNCTION
 function startApp() {
   getFromLocalStorage();
   renderAllFavourites(favoriteSeries);
   addEventListeners();
 }
 
+// FAVORITES FUNCTIONS
+// Busca en favoritos el id que coincida con el id que se le pasa, devuelve el índice del elemento
 function getFavoriteIndex(id) {
   return favoriteSeries.findIndex((fav) => fav.id === id);
 }
@@ -26,7 +29,7 @@ function getFavoriteIndex(id) {
 function isSeriesInFavorites(series) {
   const favIndex = getFavoriteIndex(series.id);
 
-  // Devuelve false si no está, true si la encuentra
+  // Devuelve false si no está (-1), true si la encuentra
   return favIndex !== -1;
 }
 
@@ -38,7 +41,10 @@ function addFavorite(clickedSeries) {
 // Eliminar un favorite del array
 function removeFavorite(clickedId) {
   const favIndex = getFavoriteIndex(clickedId);
-  favoriteSeries.splice(favIndex, 1);
+  // Elimina solamente si encuentra el elemento
+  if (favIndex !== -1) {
+    favoriteSeries.splice(favIndex, 1);
+  }
 }
 
 // Añadir o eliminar del array
@@ -54,7 +60,8 @@ function toggleFavorite(clickedSeries) {
   }
 }
 
-// Trae los datos de localStorage a la página
+// LOCALSTORAGE
+// Trae los datos de localStorage a la página siempre que existan
 function getFromLocalStorage() {
   const localStorageFavs = localStorage.getItem('favs');
 
@@ -65,6 +72,7 @@ function getFromLocalStorage() {
 
 // Guarda los datos en el localStorage solo si el array tiene elementos
 function setInLocalStorage() {
+  // Si el array está vacío, borra el localStorage
   if (favoriteSeries.length === 0) {
     localStorage.removeItem('favs');
   } else {
@@ -73,6 +81,7 @@ function setInLocalStorage() {
   }
 }
 
+// API FUNCTION
 function getSeriesDataFromAPI(searchedItem) {
   fetch(`//api.tvmaze.com/search/shows?q=${searchedItem}`)
     .then((response) => response.json())
@@ -93,70 +102,51 @@ function getSeriesDataFromAPI(searchedItem) {
     .catch((error) => console.error(error));
 }
 
+// Actualiza los datos: localStorage, favorites y series
 function updateUI() {
   setInLocalStorage();
   renderAllFavourites(favoriteSeries);
   renderAllSeries(searchedSeries);
 }
 
-function renderOneSeries(series) {
-  const isFavorite = isSeriesInFavorites(series);
-
+// RENDER FUNCTIONS
+function createSeriesItem(series, listType) {
   // Creación del <li>
-  const liSeries = document.createElement('li');
-  liSeries.classList.add('js_resultsLi', 'results__item');
-  // Añade la clase solo si isFavorite es true
-  if (isFavorite) {
-    liSeries.classList.add('results__item--favorite');
+  const li = document.createElement('li');
+  li.classList.add(`js_${listType}Li`, `${listType}__item`);
+
+  if (listType === 'results') {
+    // Añade la clase solo si isFavorite es true
+    const isFavorite = isSeriesInFavorites(series);
+    if (isFavorite) {
+      li.classList.add('results__item--favorite');
+    }
   }
-  liSeries.dataset.id = `${series.id}`;
-  resultsUl.appendChild(liSeries);
 
+  li.dataset.id = series.id;
+  return li;
+}
+
+function createSeriesImage(series, listType) {
   // Creación de la <img>
-  const imgSeries = document.createElement('img');
-  imgSeries.classList.add('results__img');
-  imgSeries.src = `${series.image}`;
-  imgSeries.alt = `Portada de ${series.name}`;
-  liSeries.appendChild(imgSeries);
+  const img = document.createElement('img');
+  img.classList.add(`${listType}__img`);
+  img.src = series.image;
+  img.alt = `Portada de ${series.name}`;
+  return img;
+}
 
+function createSeriesTitle(series, listType) {
   // Creación del <p>
-  const titleSeries = document.createElement('p');
-  titleSeries.classList.add('results__text');
-  const textTitle = document.createTextNode(`${series.name}`);
-  titleSeries.appendChild(textTitle);
-  liSeries.appendChild(titleSeries);
+  const title = document.createElement('p');
+  title.classList.add(`${listType}__text`);
+  const textTitle = document.createTextNode(series.name);
+  title.appendChild(textTitle);
+  return title;
 }
 
-function renderAllSeries(seriesList) {
-  resultsUl.innerHTML = '';
-
-  seriesList.forEach((series) => {
-    renderOneSeries(series);
-  });
-}
-
-function renderOneFav(favorite) {
-  // Creación de <li>
-  const liFav = document.createElement('li');
-  liFav.classList.add('favorites__item');
-  liFav.dataset.id = `${favorite.id}`;
-  favoritesUl.appendChild(liFav);
-
-  // Creación de <img>
-  const imgFav = document.createElement('img');
-  imgFav.classList.add('favorites__img');
-  imgFav.src = `${favorite.image}`;
-  imgFav.alt = `Portada de ${favorite.name}`;
-  liFav.appendChild(imgFav);
-
-  // Creación de <p>
-  const titleFav = document.createElement('p');
-  titleFav.classList.add('favorites__text');
-  const textTitle = document.createTextNode(`${favorite.name}`);
-  titleFav.appendChild(textTitle);
-  liFav.appendChild(titleFav);
-
-  //Creación de <button>
+function createFavoriteButton() {
+  // Creación del <button> corazón de favoritos
   const btnFav = document.createElement('button');
   btnFav.classList.add('favorites__btn');
   btnFav.ariaLabel = 'Eliminar de favoritos';
@@ -184,7 +174,38 @@ function renderOneFav(favorite) {
       <path
         d="M481-83Q347-218 267.5-301t-121-138q-41.5-55-54-94T80-620q0-92 64-156t156-64q45 0 87 16.5t75 47.5l-62 216h120l-34 335 114-375H480l71-212q25-14 52.5-21t56.5-7q92 0 156 64t64 156q0 48-13 88t-55 95.5q-42 55.5-121 138T481-83Zm-71-186 21-211H294l75-263q-16-8-33.5-12.5T300-760q-58 0-99 41t-41 99q0 31 11.5 62t40 70.5q28.5 39.5 77 92T410-269Zm188-48q111-113 156.5-180T800-620q0-58-41-99t-99-41q-11 0-22 1.5t-22 5.5l-24 73h116L598-317Zm110-363ZM294-480Z"/>
     </svg> `;
-  liFav.appendChild(btnFav);
+  return btnFav;
+}
+
+function createSeriesCard(series, listType) {
+  // Creación de la card básica de series
+  const li = createSeriesItem(series, listType);
+  const img = createSeriesImage(series, listType);
+  const title = createSeriesTitle(series, listType);
+
+  li.append(img, title);
+  return li;
+}
+
+function renderOneSeries(series) {
+  const li = createSeriesCard(series, 'results');
+  resultsUl.appendChild(li);
+}
+
+function renderAllSeries(seriesList) {
+  resultsUl.innerHTML = '';
+
+  seriesList.forEach((series) => {
+    renderOneSeries(series);
+  });
+}
+
+function renderOneFav(favorite) {
+  const li = createSeriesCard(favorite, 'favorites');
+  const btn = createFavoriteButton();
+
+  li.appendChild(btn);
+  favoritesUl.appendChild(li);
 }
 
 function renderAllFavourites(favoriteList) {
@@ -196,6 +217,7 @@ function renderAllFavourites(favoriteList) {
 }
 
 //FUNCIONES DE EVENTOS
+// Botón search: búsqueda en la API
 function handleClickSearchBtn(event) {
   event.preventDefault();
   const searchedValue = searchInput.value.trim();
@@ -203,6 +225,7 @@ function handleClickSearchBtn(event) {
   getSeriesDataFromAPI(searchedValue);
 }
 
+// Añade o elimina favoritos
 function handleToggleFavorite(event) {
   // Encontrar el li clicado en el ul
   const clickedLi = event.target.closest('li');
@@ -215,14 +238,15 @@ function handleToggleFavorite(event) {
   // Extraer el id del li clicado
   const clickedId = parseInt(clickedLi.dataset.id);
 
-  // Para saber si el click viene del botón de favoritos
+  // Para saber si el click viene del botón de favoritos (devuelve el item o null)
   const isFavoriteList = clickedLi.closest('.favorites');
 
   if (isFavoriteList) {
     // El click viene de favorites
     // encontrar el botón al que se ha clickado
     const btn = event.target.closest('.favorites__btn');
-    // De no clicarse en el botón, no hace nada
+
+    // De no clicarse en el botón devuelve null y no hace nada
     if (!btn) {
       return;
     }
@@ -236,6 +260,7 @@ function handleToggleFavorite(event) {
 
     toggleFavorite(clickedSeries);
   }
+
   updateUI();
 }
 
