@@ -6,7 +6,7 @@ Aplicación web que permite buscar series a través de una API y gestionar una l
 
 ## Demo
 
-Puedes acceder a la demo del proyecto [aquí](#).
+Puedes acceder a la demo del proyecto [aquí](https://beta.adalab.es/modulo-2-evaluacion-final-CrisOnWeb/).
 
 ## Tecnologías
 
