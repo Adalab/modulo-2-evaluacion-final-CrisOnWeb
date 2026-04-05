@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Seriesfera</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <script src="./js/main.js" defer></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DlOycYDe.css">
+  </head>
+
+  <body>
+    <header class="header">
+  <h1 class="header__title">Seriesfera: Buscador de series</h1>
+</header>
+
+
+    <main class="main">
+      <div class="search-and-favs">
+        <section class="search">
+          <form class="search__form">
+            <label for="search" class="visually-hidden">Buscar series</label>
+            <input
+              class="js_searchInput search__input"
+              type="text"
+              name="search"
+              id="search"
+              autocomplete="off"
+            />
+            <button class="js_searchBtn btn" type="submit">Buscar</button>
+          </form>
+        </section>
+
+        <section class="favorites">
+          <h2 class="favorites__title">Mis series favoritas</h2>
+          <ul class="js_favoritesUl favorites__list"></ul>
+          <button class="js_favoritesRemoveAll favorites__remove btn">
+            Borrar todo
+          </button>
+        </section>
+      </div>
+
+      <section class="results">
+        <ul class="js_resultsUl results__list"></ul>
+      </section>
+    </main>
+
+    <footer class="footer">
+  <p class="footer__copy">
+    &copy; 2026. Hecho por <strong>Cris</strong> con 🩵
+  </p>
+  <p class="footer__api">
+    Datos proporcionados por <strong>TVMaze API.</strong>
+  </p>
+  <a
+    class="footer__link"
+    href="https://github.com/Adalab/modulo-2-evaluacion-final-CrisOnWeb"
+    target="_blank"
+    rel="noopener"
+    ><svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="icon-github"
+      aria-hidden="true"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path
+        d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"
+      />
+    </svg>
+
+    <span>Ver en GitHub</span></a
+  >
+</footer>
+
+  </body>
+</html>
